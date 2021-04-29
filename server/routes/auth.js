@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 const User = require("../models/user");
@@ -299,7 +298,5 @@ router.post("/resetPassword", function (req, res) {
 		}
 	);
 });
-
-
 
 module.exports = router;

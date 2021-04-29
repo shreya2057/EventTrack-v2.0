@@ -1,10 +1,10 @@
 class UserModel {
-  final String id;
-  final String name;
-  final String email;
-  final String profileUrl;
-  final int phone;
-  final bool isEmailVerified;
+  String id;
+  String name;
+  String email;
+  String profileUrl;
+  int phone;
+  bool isEmailVerified;
 
   UserModel(
       {this.id,

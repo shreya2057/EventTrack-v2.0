@@ -1,19 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EventModel {
-  final String id;
-  final String title;
-  final String eventCover;
-  final String description;
-  final List categories;
-  final LocationModel location;
+  String id;
+  String title;
+  File eventCover;
+  String eventCoverUrl;
+  String description;
+  String author;
+  List categories;
+  LocationModel location;
 
   EventModel({
     this.id,
     this.title,
     this.eventCover,
+    this.eventCoverUrl,
     this.description,
     this.categories,
     this.location,
@@ -23,7 +28,8 @@ class EventModel {
     return {
       '_id': id,
       'title': title,
-      'eventCover': eventCover,
+      // 'eventCover': eventCover,
+      'eventCoverUrl': eventCoverUrl,
       'description': description,
       'categories': categories,
       'location': location != null ? location.toMap() : null,
@@ -34,7 +40,7 @@ class EventModel {
     return EventModel(
       id: map['_id'],
       title: map['title'],
-      eventCover: map['eventCover'],
+      eventCoverUrl: map['eventCoverUrl'],
       description: map['description'],
       categories: map['categories'],
       location: map['location'] != null

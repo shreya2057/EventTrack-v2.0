@@ -2,10 +2,10 @@ import 'event.dart';
 import 'user.dart';
 
 class ResponseModel {
-  final String message;
-  final bool status;
-  final UserModel user;
-  final EventModel event;
+  String message;
+  bool status;
+  UserModel user;
+  EventModel event;
 
   ResponseModel({
     this.message = '',

@@ -3,9 +3,9 @@ import '../services/response.dart';
 class EventServer {
   EventServer._();
 
-  static eventform(Map<String, dynamic> data) {
+  static create(data) {
     return HttpServer().postRequest(
-      '/e/eventform',
+      '/e/create',
       data: data,
     );
   }

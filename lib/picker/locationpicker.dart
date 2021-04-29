@@ -100,18 +100,21 @@ class _PickALocationState extends State<PickALocation> {
                           border: InputBorder.none,
                         ),
                       ),
-                    ).ripple(() => Get.to(_search())).hP16,
-                    ElevatedButton(
-                      onPressed: () {
-                        LocationModel pickedLocation = LocationModel(
-                          coordinates: selectedCoordinates,
-                          placemark: placeInfo,
-                        );
-                        Get.back(result: pickedLocation);
-                        return pickedLocation;
-                      },
-                      child: Text('Done'),
-                    )
+                    ).ripple(() => Get.to(() => _search())).hP16,
+                    Positioned(
+                      bottom: 10,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          LocationModel pickedLocation = LocationModel(
+                            coordinates: selectedCoordinates,
+                            placemark: placeInfo,
+                          );
+                          Get.back(result: pickedLocation);
+                          return pickedLocation;
+                        },
+                        child: Text('Done'),
+                      ),
+                    ).alignCenter
                   ],
                 ),
         ),

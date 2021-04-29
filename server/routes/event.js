@@ -1,65 +1,66 @@
-
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-var async = require("async");
-var nodemailer = require("nodemailer");
-var crypto = require("crypto");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
 const Event = require("../models/event");
 
+var storage = multer.diskStorage({
+	filename: function (_, file, callback) {
+		callback(null, Date.now() + file.originalname);
+	},
+});
+
+var upload = multer({ storage: storage });
 
 router.get("/", function (_, res) {
-    return res.send("You are not authorized to visit this website.");
+	return res.send("You are not authorized to visit this website.");
 });
-router.post("/eventform", function (req, res) {
-    Event.findOne(
-        { title: req.body.title },
-        { _id: 0, title: 1 },
-        function (_, foundTitle) {
-            if (foundTitle) {
-                return res.json({
-                    message: "Title Already Exists",
-                    status: false,
-                });
-            } else {
-                const newEvent = new Event();
-                newEvent.title = req.body.title;
-                newEvent.description = req.body.description;
-                // newEvent.eventPhotoUrl = req.body.url;
-                // var categories = req.body.category.split(",");
-                // newEvent.category = categories;
-                // var location = {
-                //     latitude: req.body.latitude,
-                //     longitude: req.body.longitude,
-                //     city: req.body.city,
-                //     country: req.body.country,
-                // };
-                // newEvent.location = location;
-                // newEvent.dateTime.startDate = Date.now();
-
-                newEvent.save(function (err) {
-                    if (!err) {
-                        return res.json({ event: { _id: newEvent._id }, status: true });
-                    } else {
-                        return res.json({
-                            message: err.message,
-                            status: false,
-                        });
-                    }
-                });
-
-
-            }
-
-        });
-
-
-}
-
-
-
-);
-
-
+router.post("/create", upload.single("eventCover"), function (req, res) {
+	Event.findOne(
+		{ title: req.body.title },
+		{ _id: 0, title: 1 },
+		function (_, foundTitle) {
+			if (foundTitle) {
+				return res.json({
+					message:
+						"Event with same name already exists. Please try a new title for your event.",
+					status: false,
+				});
+			} else {
+				let newEvent = new Event(req.body);
+				cloudinary.uploader.upload(
+					req.file.path,
+					{
+						folder: "/events/" + newEvent.title + "-" + newEvent._id,
+						public_id: req.file.filename + "-u" + Date.now().toString(),
+					},
+					function (err, result) {
+						if (err) {
+							res.json({
+								message: err.message,
+								isSuccess: false,
+							});
+						} else {
+							newEvent.eventCoverUrl = result.secure_url;
+							newEvent.save(function (err) {
+								if (!err) {
+									return res.json({
+										message: "Your event has been created.",
+										status: true,
+									});
+								} else {
+									return res.json({
+										message: err.message,
+										status: false,
+									});
+								}
+							});
+						}
+					}
+				);
+			}
+		}
+	);
+});
 
 module.exports = router;

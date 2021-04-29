@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../components/rounded_button.dart';
 import '../../../model/event.dart';
 import '../../../picker/filepicker.dart';
 import '../../../picker/locationpicker.dart';
+import '../../../states/events.dart';
 import '../../../theme/extension.dart';
 import '../../../theme/text_styles.dart';
 
@@ -15,8 +17,8 @@ class EventExtraInput extends StatefulWidget {
 }
 
 class _EventExtraInputState extends State<EventExtraInput> {
-  File _cover;
   LocationModel _pickedLocation;
+  File _cover;
   void _pickedImage(File image) {
     _cover = image;
   }
@@ -41,7 +43,7 @@ class _EventExtraInputState extends State<EventExtraInput> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var result = await Get.to(PickALocation());
+                var result = await Get.to(() => PickALocation());
                 setState(() {
                   _pickedLocation = result;
                 });
@@ -50,6 +52,32 @@ class _EventExtraInputState extends State<EventExtraInput> {
             ),
             if (_pickedLocation != null)
               Text(_pickedLocation.toMap().toString()),
+            RoundedButton(
+              text: "Next",
+              onPress: () {
+                FocusScope.of(context).unfocus();
+
+                final newEvent = EventModel(
+                  eventCover: _cover,
+                  location: _pickedLocation,
+                );
+
+                // if (validation()) {
+                // EventServer.eventform(newEvent.toMap()).then((res) async {
+                //   if (!res.status) {
+                //     FlashMessage.errorFlash(res.message);
+                //   } else {
+                Event.to.loadEvent(newEvent, phase: 'second');
+                // Get.offNamed(
+                //   Routes.eventExtraInput,
+                //   // arguments: newEvent,
+                // );
+                Event.to.createEvent();
+                // }
+                // });
+                // }
+              },
+            ),
           ],
         ).vP8,
       ),

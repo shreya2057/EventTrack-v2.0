@@ -39,7 +39,7 @@ class EventCard extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             ImageCard(
-              imageSource: recent.eventCover,
+              imageSource: recent.eventCoverUrl,
             ),
             BookmarkButton(
               active: this.isSaved,

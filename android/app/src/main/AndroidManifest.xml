@@ -6,7 +6,8 @@
 
    <application
         android:label="eventtrack"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyAE9CtYq2rEcRsKG-mjtB9jerYSyPZkx3Y"/>
         <activity

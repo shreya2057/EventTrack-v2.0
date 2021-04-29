@@ -3,12 +3,17 @@ var mongoose = require("mongoose");
 var eventSchema = new mongoose.Schema({
 	title: { type: String, required: true, unique: true },
 	description: { type: String },
-	category: Array,
-	// eventPhotoUrl: { type: String, required: true },
+	categories: Array,
+	eventCoverUrl: { type: String },
 	location: {
 		latitude: Number,
 		longitude: Number,
-		city: String,
+		name: String,
+		street: String,
+		locality: String,
+		subLocality: String,
+		administrativeArea: String,
+		subAdministrativeArea: String,
 		country: String,
 	},
 	// dateTime: {
@@ -25,6 +30,7 @@ var eventSchema = new mongoose.Schema({
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
+		// required: true,
 	},
 	images: [
 		{

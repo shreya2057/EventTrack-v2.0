@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../components/categoryBar.dart';
 import '../../../components/message.dart';
 import '../../../components/rounded_button.dart';
-import '../../../components/categoryBar.dart';
 import '../../../components/textarea.dart';
 import '../../../model/event.dart';
 import '../../../routes.dart';
+import '../../../states/events.dart';
 import '../../../theme/extension.dart';
 import '../../../theme/text_styles.dart';
 
@@ -29,6 +30,7 @@ class CreateEventForm extends StatelessWidget {
   final RxString _title = ''.obs;
   final RxString _description = ''.obs;
   final RxList _selectedCategories = [].obs;
+  final event = Get.put(Event());
 
   validation() {
     if (_title.value.trim().isEmpty) {
@@ -93,29 +95,34 @@ class CreateEventForm extends StatelessWidget {
                         ),
                     ],
                   ),
-                  RoundedButton(
-                    text: "Next",
-                    onPress: () {
-                      FocusScope.of(context).unfocus();
+                  GetBuilder<Event>(
+                    builder: (_) {
+                      return RoundedButton(
+                        text: "Next",
+                        onPress: () {
+                          FocusScope.of(context).unfocus();
 
-                      final newEvent = EventModel(
-                        title: _title.value.trim(),
-                        description: _description.value.trim(),
-                        categories: _selectedCategories.toList(),
+                          final newEvent = EventModel(
+                            title: _title.value.trim(),
+                            description: _description.value.trim(),
+                            categories: _selectedCategories.toList(),
+                          );
+
+                          if (validation()) {
+                            // EventServer.eventform(newEvent.toMap()).then((res) async {
+                            //   if (!res.status) {
+                            //     FlashMessage.errorFlash(res.message);
+                            //   } else {
+                            event.loadEvent(newEvent);
+                            Get.offNamed(
+                              Routes.eventExtraInput,
+                              // arguments: newEvent,
+                            );
+                            // }
+                            // });
+                          }
+                        },
                       );
-
-                      if (validation()) {
-                        // EventServer.eventform(newEvent.toMap()).then((res) async {
-                        //   if (!res.status) {
-                        //     FlashMessage.errorFlash(res.message);
-                        //   } else {
-                        Get.offNamed(
-                          Routes.eventExtraInput,
-                          arguments: newEvent,
-                        );
-                        // }
-                        // });
-                      }
                     },
                   ),
                 ],

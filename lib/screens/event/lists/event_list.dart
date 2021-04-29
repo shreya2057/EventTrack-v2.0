@@ -1,8 +1,7 @@
+import 'package:eventtrack/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../model/event.dart';
-import '../detail/event_main.dart';
 import 'eventCard.dart';
 
 class PopularList extends StatefulWidget {

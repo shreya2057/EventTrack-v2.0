@@ -36,17 +36,24 @@ class GoogleLocation extends GetxController {
       if (permission == LocationPermission.deniedForever) {
         FlashMessage.errorFlash(
             'Location permissions are permanently denied, we cannot request permissions.');
+        Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
       }
 
       if (permission == LocationPermission.denied) {
         FlashMessage.errorFlash('Location permissions are denied');
+        Future.error('Location permissions are denied');
       }
     }
   }
 
   setCurrentLocation() async {
-    await requestLocationPermission();
-    currentLocation = await geoLocatorService.getCurrentLocation();
-    update();
+    try {
+      await requestLocationPermission();
+      currentLocation = await geoLocatorService.getCurrentLocation();
+      update();
+    } catch (e) {
+      FlashMessage.errorFlash(e);
+    }
   }
 }
