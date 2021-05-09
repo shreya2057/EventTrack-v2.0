@@ -19,7 +19,6 @@ class Event extends GetxController {
         // event.value.author = User.to.currentUser.value.id;
         break;
       case 'extra':
-        // event.value.eventCover = e.eventCover;
         event.value.location = e.location;
         event.value.date = e.date;
         event.value.time = e.time;

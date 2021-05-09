@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 
 import './routes.dart';
 import './services/authState.dart';
+import 'screens/event/create_form/main_form.dart';
 import 'screens/home/homeinit.dart';
 import 'screens/welcome/welcome.dart';
 
