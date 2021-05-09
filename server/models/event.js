@@ -5,6 +5,10 @@ var eventSchema = new mongoose.Schema({
 	description: { type: String },
 	categories: Array,
 	eventCoverUrl: { type: String },
+	dateTime: {
+		date: Array,
+		time: Array,
+	},
 	location: {
 		latitude: Number,
 		longitude: Number,
@@ -16,10 +20,6 @@ var eventSchema = new mongoose.Schema({
 		subAdministrativeArea: String,
 		country: String,
 	},
-	// dateTime: {
-	// 	startDate: { type: Date, required: true },
-	// 	endDate: Date,
-	// },
 	createdAt: { type: Date, default: Date.now() },
 	eventFee: { type: Number, default: 0.0 },
 	verificationState: {

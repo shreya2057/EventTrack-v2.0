@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 
 import '../connect_server/event.dart';
@@ -8,17 +10,28 @@ class Event extends GetxController {
 
   Rx<EventModel> event = EventModel().obs;
 
-  loadEvent(EventModel e, {String phase = 'first'}) {
+  loadEvent(EventModel e, [String phase = 'main']) {
     switch (phase) {
-      case 'first':
+      case 'main':
         event.value.title = e.title;
         event.value.description = e.description;
         event.value.categories = e.categories;
         // event.value.author = User.to.currentUser.value.id;
         break;
-      case 'second':
-        event.value.eventCover = e.eventCover;
+      case 'extra':
+        // event.value.eventCover = e.eventCover;
         event.value.location = e.location;
+        event.value.date = e.date;
+        event.value.time = e.time;
+        break;
+      case 'cover':
+        event.value.eventCover = e.eventCover;
+        break;
+      case 'coverUrl':
+        event.value.eventCoverUrl = e.eventCoverUrl;
+        break;
+      case 'id':
+        event.value.id = e.id;
         break;
       default:
         break;
@@ -28,13 +41,17 @@ class Event extends GetxController {
   }
 
   createEvent() async {
+    return await EventServer.create(event.value.toMap());
+  }
+
+  uploadCover(File cover) async {
     FormData data = FormData({
-      ...event.value.toMap(),
+      'id': event.value.id,
       'eventCover': MultipartFile(
         event.value.eventCover,
         filename: event.value.eventCover.path.split('/').last,
       )
     });
-    return await EventServer.create(data);
+    return await EventServer.uploadCover(data);
   }
 }

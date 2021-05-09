@@ -9,4 +9,11 @@ class EventServer {
       data: data,
     );
   }
+
+  static uploadCover(data) {
+    return HttpServer().postRequest(
+      '/e/upload-cover',
+      data: data,
+    );
+  }
 }

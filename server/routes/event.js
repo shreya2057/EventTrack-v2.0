@@ -12,10 +12,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.get("/", function (_, res) {
-	return res.send("You are not authorized to visit this website.");
-});
-router.post("/create", upload.single("eventCover"), function (req, res) {
+router.post("/create", function (req, res) {
 	Event.findOne(
 		{ title: req.body.title },
 		{ _id: 0, title: 1 },
@@ -27,11 +24,51 @@ router.post("/create", upload.single("eventCover"), function (req, res) {
 					status: false,
 				});
 			} else {
-				let newEvent = new Event(req.body);
+				let newEvent = new Event({
+					title: req.body.title,
+					description: req.body.description,
+					categories: req.body.categories,
+					location: req.body.location,
+					dateTime: {
+						date: req.body.date,
+						time: req.body.time,
+					},
+				});
+
+				newEvent.save(function (err) {
+					if (!err) {
+						return res.json({
+							message: "Your event has been created.",
+							value: newEvent._id,
+							status: true,
+						});
+					} else {
+						return res.json({
+							message: err.message,
+							status: false,
+						});
+					}
+				});
+			}
+		}
+	);
+});
+
+router.post("/upload-cover", upload.single("eventCover"), function (req, res) {
+	Event.findOne(
+		{ _id: req.body.id },
+		{ eventCoverUrl: 1, title: 1, images: 1 },
+		function (err, foundEvent) {
+			if (err) {
+				return res.json({
+					message: "Could not find your event.",
+					status: false,
+				});
+			} else {
 				cloudinary.uploader.upload(
 					req.file.path,
 					{
-						folder: "/events/" + newEvent.title + "-" + newEvent._id,
+						folder: "/events/" + foundEvent.title + "-" + foundEvent._id,
 						public_id: req.file.filename + "-u" + Date.now().toString(),
 					},
 					function (err, result) {
@@ -41,11 +78,15 @@ router.post("/create", upload.single("eventCover"), function (req, res) {
 								isSuccess: false,
 							});
 						} else {
-							newEvent.eventCoverUrl = result.secure_url;
-							newEvent.save(function (err) {
+							foundEvent.eventCoverUrl = result.secure_url;
+							foundEvent.images.push({
+								url: result.secure_url,
+								description: "",
+							});
+							foundEvent.save(function (err) {
 								if (!err) {
 									return res.json({
-										message: "Your event has been created.",
+										value: result.secure_url,
 										status: true,
 									});
 								} else {
@@ -62,5 +103,4 @@ router.post("/create", upload.single("eventCover"), function (req, res) {
 		}
 	);
 });
-
 module.exports = router;

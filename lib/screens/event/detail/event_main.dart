@@ -9,10 +9,11 @@ class EventDetailMain extends StatelessWidget {
 
   const EventDetailMain({
     Key key,
-    @required this.image,
+    this.image =
+        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
     this.isLike = false,
-    @required this.onBackPress,
-    @required this.onLikePress,
+    this.onBackPress,
+    this.onLikePress,
   }) : super(key: key);
 
   @override
@@ -45,7 +46,7 @@ class EventDetailMain extends StatelessWidget {
               child: FlatButton(
                 splashColor: Colors.green.withOpacity(0.3),
                 padding: EdgeInsets.all(10),
-                onPressed: this.onBackPress,
+                onPressed: null,
                 child: Icon(Icons.arrow_back, size: 25),
               ),
             ),
@@ -71,7 +72,7 @@ class EventDetailMain extends StatelessWidget {
               ),
               child: FlatButton(
                 padding: EdgeInsets.all(10),
-                onPressed: this.onLikePress,
+                onPressed: null,
                 child: SvgPicture.asset(
                   "assets/icons/heart.svg",
                   color:

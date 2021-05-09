@@ -54,6 +54,7 @@ class GoogleLocation extends GetxController {
       update();
     } catch (e) {
       FlashMessage.errorFlash(e);
+      Future.error(e);
     }
   }
 }

@@ -9,6 +9,7 @@ import '../components/rounded_input_field.dart';
 import '../model/event.dart';
 import '../states/location.dart';
 import '../theme/extension.dart';
+import '../theme/text_styles.dart';
 
 class PickALocation extends StatefulWidget {
   @override
@@ -101,9 +102,14 @@ class _PickALocationState extends State<PickALocation> {
                         ),
                       ),
                     ).ripple(() => Get.to(() => _search())).hP16,
-                    Positioned(
+                    Positioned.fill(
                       bottom: 10,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                          ),
+                        ),
                         onPressed: () {
                           LocationModel pickedLocation = LocationModel(
                             coordinates: selectedCoordinates,
@@ -112,9 +118,12 @@ class _PickALocationState extends State<PickALocation> {
                           Get.back(result: pickedLocation);
                           return pickedLocation;
                         },
-                        child: Text('Done'),
-                      ),
-                    ).alignCenter
+                        child: Text(
+                          'Done',
+                          style: TextStyle(fontSize: FontSizes.title),
+                        ),
+                      ).alignBottomCenter,
+                    )
                   ],
                 ),
         ),
@@ -137,7 +146,7 @@ class _PickALocationState extends State<PickALocation> {
           apiKey: env['MAPBOX_API_KEY'],
           searchHint: 'Search around',
           onSelected: (place) async {
-            print(place.toString());
+            print('${place.toRawJson()}');
             await goToPlace(
               LatLng(
                 place.geometry.coordinates[1],

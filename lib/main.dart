@@ -5,8 +5,8 @@ import 'package:get/route_manager.dart';
 
 import './routes.dart';
 import './services/authState.dart';
-import 'screens/event/create_form/main_form.dart';
 import 'screens/home/homeinit.dart';
+import 'screens/welcome/welcome.dart';
 
 Future main() async {
   await DotEnv.load(fileName: ".env");
@@ -30,9 +30,9 @@ class EventTrack extends StatelessWidget {
             return CircularProgressIndicator();
           } else {
             if (!snap.data['isAuthenticated']) {
-              return CreateEventForm();
+              // return CreateEventForm();
               // return EventExtraInput();
-              // return Welcome();
+              return Welcome();
             } else {
               return HomeInit();
             }

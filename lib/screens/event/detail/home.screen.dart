@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../theme/extension.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,13 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           width: Get.width,
           height: Get.height,
-          // child: Column(
-          //   children: <Widget>[
-          //     // PopularList(
-          //     //   listPopular: recent,
-          //     // ),
-          //   ],
-          // ),
+          child: Text('Success').alignCenter,
         ),
       ),
     );

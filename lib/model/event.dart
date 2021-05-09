@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -9,6 +8,8 @@ class EventModel {
   String title;
   File eventCover;
   String eventCoverUrl;
+  List<String> date;
+  List<String> time;
   String description;
   String author;
   List categories;
@@ -19,6 +20,8 @@ class EventModel {
     this.title,
     this.eventCover,
     this.eventCoverUrl,
+    this.date,
+    this.time,
     this.description,
     this.categories,
     this.location,
@@ -30,6 +33,8 @@ class EventModel {
       'title': title,
       // 'eventCover': eventCover,
       'eventCoverUrl': eventCoverUrl,
+      'date': date,
+      'time': time,
       'description': description,
       'categories': categories,
       'location': location != null ? location.toMap() : null,
@@ -41,6 +46,8 @@ class EventModel {
       id: map['_id'],
       title: map['title'],
       eventCoverUrl: map['eventCoverUrl'],
+      date: map['date'],
+      time: map['time'],
       description: map['description'],
       categories: map['categories'],
       location: map['location'] != null
@@ -54,7 +61,7 @@ class LocationModel {
   final Placemark placemark;
   final LatLng coordinates;
 
-  LocationModel({@required this.coordinates, this.placemark});
+  LocationModel({this.coordinates, this.placemark});
 
   Map<String, dynamic> toMap() => {
         'latitude': coordinates.latitude ?? null,

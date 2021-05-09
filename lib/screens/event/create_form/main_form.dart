@@ -47,89 +47,79 @@ class CreateEventForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Text(
-                "Create Your Event",
-                style: TextStyles.h1Style,
-              ),
-              Column(
-                children: [
-                  TextArea(
-                    hintText: "Event Name",
-                    maxlines: 2,
-                    maxlength: 50,
-                    autofocus: true,
-                    capitalization: TextCapitalization.sentences,
-                    controller: _title,
-                  ),
-                  TextArea(
-                    hintText: "Description",
-                    autofocus: true,
-                    controller: _description,
-                    capitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.multiline,
-                    maxlines: 6,
-                    maxlength: 250,
-                  ),
-                  Text(
-                    "Select Event Categories",
-                    style: TextStyles.titleM,
-                  ),
-                  Wrap(
-                    children: [
-                      for (var i = 0; i < avCategories.length; i++)
-                        CategoryBar(
-                          avCategories[i],
-                          onChanged: (bool value) {
-                            if (value &&
-                                !_selectedCategories
-                                    .contains(avCategories[i])) {
-                              _selectedCategories.add(avCategories[i]);
-                            } else {
-                              _selectedCategories.remove(
-                                  _selectedCategories.indexOf(avCategories[i]));
-                            }
-                          },
-                        ),
-                    ],
-                  ),
-                  GetBuilder<Event>(
-                    builder: (_) {
-                      return RoundedButton(
-                        text: "Next",
-                        onPress: () {
-                          FocusScope.of(context).unfocus();
-
-                          final newEvent = EventModel(
-                            title: _title.value.trim(),
-                            description: _description.value.trim(),
-                            categories: _selectedCategories.toList(),
-                          );
-
-                          if (validation()) {
-                            // EventServer.eventform(newEvent.toMap()).then((res) async {
-                            //   if (!res.status) {
-                            //     FlashMessage.errorFlash(res.message);
-                            //   } else {
-                            event.loadEvent(newEvent);
-                            Get.offNamed(
-                              Routes.eventExtraInput,
-                              // arguments: newEvent,
-                            );
-                            // }
-                            // });
+        child: ListView(
+          children: <Widget>[
+            Text(
+              "Create Your Event",
+              style: TextStyles.h1Style,
+            ),
+            Column(
+              children: [
+                TextArea(
+                  hintText: "Event Name",
+                  maxlines: 2,
+                  maxlength: 50,
+                  autofocus: true,
+                  capitalization: TextCapitalization.sentences,
+                  controller: _title,
+                ),
+                TextArea(
+                  hintText: "Description",
+                  autofocus: true,
+                  controller: _description,
+                  capitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.multiline,
+                  maxlines: 6,
+                  maxlength: 250,
+                ),
+                Text(
+                  "Select Event Categories",
+                  style: TextStyles.titleM,
+                ),
+                Wrap(
+                  children: [
+                    for (var i = 0; i < avCategories.length; i++)
+                      CategoryBar(
+                        avCategories[i],
+                        onChanged: (bool value) {
+                          if (value &&
+                              !_selectedCategories.contains(avCategories[i])) {
+                            _selectedCategories.add(avCategories[i]);
+                          } else {
+                            _selectedCategories.remove(
+                                _selectedCategories.indexOf(avCategories[i]));
                           }
                         },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ).p(16),
-        ),
+                      ),
+                  ],
+                ),
+                GetBuilder<Event>(
+                  builder: (_) {
+                    return RoundedButton(
+                      text: "Next",
+                      onPress: () {
+                        FocusScope.of(context).unfocus();
+
+                        final newEvent = EventModel(
+                          title: _title.value.trim(),
+                          description: _description.value.trim(),
+                          categories: _selectedCategories.toList(),
+                        );
+
+                        if (validation()) {
+                          event.loadEvent(newEvent);
+                          Get.offNamed(
+                            Routes.eventExtraInput,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ).p(16),
       ),
     );
   }
